@@ -60,7 +60,9 @@ public class MemberController {
 
   @PostMapping("/login/jwt")
   @ResponseBody
-  public String loginJWT(@RequestBody Map<String, String> data) {
+  public String loginJWT(@RequestBody Map<String, String> data,
+                        HttpServletResponse response
+                        ) {
 
     var authToken = new UsernamePasswordAuthenticationToken(
       data.get("username"), data.get("password")
@@ -68,8 +70,25 @@ public class MemberController {
    var auth = authenticationManagerBuilder.getObject().authenticate(authToken);  
    SecurityContextHolder.getContext().setAuthentication(auth); 
 
-   return "";
+   var jwt = JwtUtil.createToken(SecurityContextHolder.getContext().getAuthentication()); 
+   System.out.println(jwt);
+    
+   var cookie = new Cookie("jwt", jwt);
+   cookie.setMaxAge(10);
+   cookie.setHttpOnly(true);
+   cookie.setPath("/");
+   response.addCookie(cookie);
+  
+    
+   return jwt;
   }
+
+  @GetMapping("/my-page/jwt")
+  @ResponseBody
+  public String myPageJWT() {
+  JWT 까보고 로그인잘되어있으면 마이페이지 보내주기~
+    return "마이페이지데이터";
+  } 
 
 }
 
