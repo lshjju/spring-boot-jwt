@@ -7,7 +7,9 @@ import org.springframework.stereotype.Controller;
 public class MemberController {
   
   private final MemberRepository memberRepository;
+  private final MemberService memberService;
   private final PasswordEncoder passwordEncoder;
+  private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
   @GetMapping("/register")
   String register() {
@@ -54,6 +56,19 @@ public class MemberController {
     var result = a.get();
     var data = new MemberDto(result.getUsername(), result.getDisplayName());
     return data;
+  }
+
+  @PostMapping("/login/jwt")
+  @ResponseBody
+  public String loginJWT(@RequestBody Map<String, String> data) {
+
+    var authToken = new UsernamePasswordAuthenticationToken(
+      data.get("username"), data.get("password")
+    );
+   var auth = authenticationManagerBuilder.getObject().authenticate(authToken);  
+   SecurityContextHolder.getContext().setAuthentication(auth); 
+
+   return "";
   }
 
 }
