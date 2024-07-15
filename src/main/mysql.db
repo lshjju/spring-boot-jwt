@@ -1,0 +1,5 @@
+CREATE FULLTEXT INDEX fulltext_index
+ON shop.item(title) with parser ngram;  
+
+SELECT * FROM shop.sales INNER JOIN shop.`member`
+ON sales.member_id = `member`.id;
