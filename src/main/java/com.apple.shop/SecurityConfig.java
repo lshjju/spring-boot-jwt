@@ -21,21 +21,22 @@ public class SecurityConfig {
   
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-// csrf 켜기
-    //     http.csrf(csrf -> csrf.csrfTokenRepository(csrfTokenRepository())
-//        .ignoringRequestMatchers("/login")
-// )
-    
     http.csrf((csrf) -> csrf.disable());
+    
+    http.sessionManagement((session) -> session
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+    );
+    
     http.authorizeHttpRequests((authorize) ->
         authorize.requestMatchers("/**").permitAll()
     );
 
-    http.formLogin((formLogin) 
-                   -> formLogin.loginPage("/login")
-                    .defaultSuccessUrl("/")
-                    // .failureUrl("/fail")
-    ); 
+    // http.formLogin((formLogin) 
+    //                -> formLogin.loginPage("/login")
+    //                 .defaultSuccessUrl("/")
+    // ); 
+
+    
     http.logout(logout -> logout.logoutUrl("/logout"))
     
     return http.build();
