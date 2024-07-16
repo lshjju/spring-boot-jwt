@@ -27,7 +27,7 @@ public class SecurityConfig {
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     );
     
-    http.authorizeHttpRequests((authorize) ->
+http.addFilterBefore(new JwtFilter()), ExceptionTranslationFilter.class);    http.authorizeHttpRequests((authorize) ->
         authorize.requestMatchers("/**").permitAll()
     );
 
