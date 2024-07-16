@@ -85,8 +85,9 @@ public class MemberController {
 
   @GetMapping("/my-page/jwt")
   @ResponseBody
-  public String myPageJWT() {
-  JWT 까보고 로그인잘되어있으면 마이페이지 보내주기~
+  String myPageJWT(HttpServletRequest request) {
+  
+
     return "마이페이지데이터";
   } 
 
